@@ -1,0 +1,1 @@
+export './ad_mob_plugin.dart';
