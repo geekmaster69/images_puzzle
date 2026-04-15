@@ -2,9 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
-import 'package:image_puzzle/domain/domain.dart';
 import 'package:image_puzzle/screens/home.dart';
-import 'package:image_puzzle/services/game_score_service.dart';
 
 import '../config/config.dart';
 import '../widget/widget.dart';
@@ -173,90 +171,16 @@ class _GameScreenState extends State<GameScreen> {
 
     // Mostrar el diálogo después de un pequeño delay para que vean el puzzle armado
     Future.delayed(const Duration(milliseconds: 500), () {
-      _showVictoryDialog();
+      showVictoryDialog(
+        context,
+        gridSize: widget.gridSize,
+        moveCount: _moveCount,
+        seconds: _stopwatch.elapsed.inSeconds,
+        timeDisplay: _timeDisplay,
+        path: widget.image,hintsLeft: _hintsLeft
+      
+      );
     });
-  }
-
-  void _showVictoryDialog() async {
-    int stars = calculateStars(
-      _moveCount,
-      _stopwatch.elapsed.inSeconds,
-      widget.gridSize,
-    );
-
-    final gameScore = GameScore(
-      path: widget.image,
-      second: _stopwatch.elapsed.inSeconds,
-      tries: _moveCount,
-      stars: stars,
-      griSize: widget.gridSize,
-    );
-    await GameScoreService().createUpdateGameScore(gameScore);
-    if (!context.mounted) return;
-
-    showDialog(
-      context: context,
-      barrierDismissible: false, // Obliga a interactuar con el diálogo
-      builder: (context) => AlertDialog(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-        title: const Text(
-          "¡Felicidades!",
-          textAlign: TextAlign.center,
-          style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-        ),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            const Text("Has armado el rompecabezas"),
-            const SizedBox(height: 20),
-            // FILA DE ESTRELLAS
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: List.generate(5, (index) {
-                return Icon(
-                  index < stars ? Icons.star : Icons.star_border,
-                  color: Colors.amber,
-                  size: 40,
-                );
-              }),
-            ),
-            const SizedBox(height: 20),
-            Text(
-              "⏱ Tiempo: $_timeDisplay",
-              style: const TextStyle(fontSize: 18),
-            ),
-            Text(
-              "👣 Movimientos: $_moveCount",
-              style: const TextStyle(fontSize: 18),
-            ),
-            const SizedBox(height: 10),
-            if (stars == 5)
-              const Text(
-                "¡Eres un maestro! 🏆",
-                style: TextStyle(
-                  color: Colors.blueAccent,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-          ],
-        ),
-        actions: [
-          Center(
-            child: ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.green,
-                foregroundColor: Colors.white,
-              ),
-              onPressed: () {
-                Navigator.pop(context); // Cerrar diálogo
-                Navigator.pop(context); // Volver al menú
-              },
-              child: const Text("VOLVER AL MENÚ"),
-            ),
-          ),
-        ],
-      ),
-    );
   }
 
   void _useHint() {
@@ -301,7 +225,7 @@ class _GameScreenState extends State<GameScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Vamos! $_timeDisplay'),
+        title: Text('Tiempo! $_timeDisplay'),
         actions: [
           Padding(
             padding: const EdgeInsets.only(right: 16),
@@ -342,7 +266,7 @@ class _GameScreenState extends State<GameScreen> {
           Expanded(
             child: Center(
               child: Container(
-                margin: const EdgeInsets.all(2),
+                //   margin: const EdgeInsets.all(2),
                 decoration: BoxDecoration(
                   border: Border.all(color: Colors.black, width: 4),
                   boxShadow: [BoxShadow(color: Colors.black26, blurRadius: 10)],

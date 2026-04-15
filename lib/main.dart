@@ -5,6 +5,9 @@ import 'config/config.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await NotificationService.init();
+
+  NotificationService.scheduleWeeklyReminder();
 
   await Environments.initialize();
   await DatabaseHelper.init();
@@ -18,8 +21,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: PuzzleMenu(),
+      home: SafeArea(top: false, child: PuzzleMenu()),
       theme: ThemeData(colorSchemeSeed: Colors.cyan, brightness: .dark),
     );
   }
