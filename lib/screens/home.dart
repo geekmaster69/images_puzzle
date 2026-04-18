@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:image_puzzle/config/constants/environments.dart';
+import 'package:image_puzzle/config/plugins/local_notifications.dart';
 import 'package:image_puzzle/screens/images_screen.dart';
 import 'package:image_puzzle/widget/app_banner.dart';
 
@@ -11,6 +12,15 @@ class PuzzleMenu extends StatefulWidget {
 }
 
 class _PuzzleMenuState extends State<PuzzleMenu> {
+
+  @override
+  void initState() {
+  
+    super.initState();
+
+
+   NotificationService.scheduleWeeklyReminder();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -39,6 +49,7 @@ class _PuzzleMenuState extends State<PuzzleMenu> {
                 ImagesMenuItem(title: 'Mascotas', category: 'pets'),
                 ImagesMenuItem(title: 'Paisajes', category: 'landscapes'),
                 ImagesMenuItem(title: 'Coches', category: 'cars'),
+                ImagesMenuItem(title: 'Playa', category: 'beach'),
               ],
             ),
           ),

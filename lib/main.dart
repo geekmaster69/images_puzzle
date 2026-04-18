@@ -7,7 +7,6 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await NotificationService.init();
 
-  NotificationService.scheduleWeeklyReminder();
 
   await Environments.initialize();
   await DatabaseHelper.init();

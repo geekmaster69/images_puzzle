@@ -7,10 +7,14 @@ class NotificationService {
       FlutterLocalNotificationsPlugin();
 
   static Future<void> init() async {
+
+    await _notificationsPlugin
+    .resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>()
+    ?.requestNotificationsPermission();
     tz_data.initializeTimeZones();
 
     const AndroidInitializationSettings initializationSettingsAndroid =
-        AndroidInitializationSettings('@mipmap/ic_launcher'); // Usa tu icono
+        AndroidInitializationSettings('launcher_icon'); // Usa tu icono
 
     const InitializationSettings initializationSettings =
         InitializationSettings(
@@ -25,10 +29,15 @@ class NotificationService {
     
     await _notificationsPlugin.cancelAll();
 
+    final message = getAleatoryMessage();
+
     await _notificationsPlugin.zonedSchedule(
-      id: 0,
-      scheduledDate: tz.TZDateTime.now(tz.local).add(const Duration(days: 7)),
+      id: 159,
+      title: message.title,
+      body: message.body,
+      scheduledDate: tz.TZDateTime.now(tz.local).add(const Duration(minutes: 1)),
       notificationDetails: const NotificationDetails(
+        
         android: AndroidNotificationDetails(
           'puzzle_reminder_channel',
           'Recordatorios de Juego',
@@ -37,7 +46,26 @@ class NotificationService {
         ),
         iOS: DarwinNotificationDetails(),
       ),
-      androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
+      androidScheduleMode: .inexact,
     );
   }
+}
+
+
+class NotificationContent {
+  final String title;
+  final String body;
+  NotificationContent(this.title, this.body);
+}
+
+NotificationContent getAleatoryMessage() {
+  List<NotificationContent> messages = [
+    NotificationContent('🏆 ¿Te rindes tan fácil?', '¡Entra y demuestra quién es el maestro del puzzle!'),
+    NotificationContent('📸 Tus fotos te extrañan...', '¿Qué recuerdo vamos a armar hoy? Entra y elige una foto.'),
+    NotificationContent('🧩 ¡Tu puzzle está listo!', 'Tómate un respiro de 2 minutos y resuelve un desafío.'),
+    NotificationContent('🔥 ¡Racha en peligro!', 'No dejes que tu racha de juego se pierda. ¡Juega ahora!'),
+  ];
+  
+  messages.shuffle(); // Mezcla la lista
+  return messages.first; // Retorna el primero
 }
