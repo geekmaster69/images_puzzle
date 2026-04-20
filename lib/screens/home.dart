@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:image_puzzle/config/constants/environments.dart';
-import 'package:image_puzzle/config/plugins/local_notifications.dart';
 import 'package:image_puzzle/screens/images_screen.dart';
 import 'package:image_puzzle/widget/app_banner.dart';
 
@@ -19,7 +18,6 @@ class _PuzzleMenuState extends State<PuzzleMenu> {
     super.initState();
 
 
-   NotificationService.scheduleWeeklyReminder();
   }
   @override
   Widget build(BuildContext context) {
