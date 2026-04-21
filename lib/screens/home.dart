@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:image_puzzle/config/constants/environments.dart';
 import 'package:image_puzzle/screens/images_screen.dart';
 import 'package:image_puzzle/widget/app_banner.dart';
+
+import '../config/config.dart';
 
 class PuzzleMenu extends StatefulWidget {
   const PuzzleMenu({super.key});
@@ -11,21 +12,19 @@ class PuzzleMenu extends StatefulWidget {
 }
 
 class _PuzzleMenuState extends State<PuzzleMenu> {
-
   @override
   void initState() {
-  
+    NotificationService.scheduleWeeklyReminder();
     super.initState();
-
-
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('Puzzle Images'), centerTitle: true),
       body: Column(
         children: [
-          AppBannerAd(adUnitId: Environments.bannerId,),
+          AppBannerAd(adUnitId: Environments.bannerId),
           Expanded(
             child: GridView.count(
               padding: EdgeInsets.all(6),

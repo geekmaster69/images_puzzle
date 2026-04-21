@@ -232,27 +232,7 @@ class _GameScreenState extends State<GameScreen> {
             child: TextButton.icon(
               label: Text('Vista previa'),
               onPressed: () {
-                showDialog(
-                  context: context,
-                  builder: (context) => AlertDialog(
-                    title: Text('Vista previa'),
-                    actions: [
-                      TextButton(
-                        onPressed: () => Navigator.pop(context),
-                        child: Text('Ok!'),
-                      ),
-                    ],
-                    content: Column(
-                      mainAxisSize: .min,
-                      children: [
-                        ClipRRect(
-                          borderRadius: BorderRadiusGeometry.circular(12),
-                          child: Image.asset(widget.image),
-                        ),
-                      ],
-                    ),
-                  ),
-                );
+                showPreview(context, widget.image);
               },
               icon: Icon(Icons.remove_red_eye),
             ),

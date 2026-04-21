@@ -10,9 +10,7 @@ class NotificationService {
   static Future<void> init() async {
     tz_data.initializeTimeZones();
 
-    // 1. Configuración del icono (Asegúrate de usar 'ic_launcher')
-    // Nota: Eliminamos el '@mipmap/' si solo pasamos el nombre,
-    // pero lo más seguro en Flutter es 'ic_launcher'
+ 
     const AndroidInitializationSettings initializationSettingsAndroid =
         AndroidInitializationSettings('launch_background');
 
@@ -22,10 +20,10 @@ class NotificationService {
           iOS: DarwinInitializationSettings(),
         );
 
-    // 2. Inicializar el plugin
+
     await _notificationsPlugin.initialize(settings: initializationSettings);
 
-    // 3. Solicitar permisos después de inicializar (Para Android 13+ e iOS)
+ 
     await _requestPermissions();
   }
 
@@ -50,14 +48,13 @@ class NotificationService {
 
     final message = getAleatoryMessage();
 
-    // Importante: No uses .exact para evitar bloqueos en Google Play
     await _notificationsPlugin.zonedSchedule(
       id: 159,
       title: message.title,
       body: message.body,
       scheduledDate: tz.TZDateTime.now(
         tz.local,
-      ).add(const Duration(days: 3)), // Bajamos a 3 días
+      ).add(const Duration(days: 3)), 
       notificationDetails: const NotificationDetails(
         android: AndroidNotificationDetails(
           'puzzle_reminder_channel',
@@ -65,12 +62,12 @@ class NotificationService {
           channelDescription: 'Notificaciones para recordar jugar puzzles',
           importance: Importance.max,
           priority: Priority.high,
-          // ✅ Esto asegura que use el icono por defecto si el personalizado falla
-          icon: 'ic_launcher',
+       
+          icon: 'launch_background',
         ),
         iOS: DarwinNotificationDetails(),
       ),
-      // ✅ Sintaxis corregida:
+
       androidScheduleMode: AndroidScheduleMode.inexactAllowWhileIdle,
     );
   }

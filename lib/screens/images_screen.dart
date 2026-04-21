@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../config/config.dart';
 import '../widget/widget.dart';
 import 'screens.dart';
 
@@ -16,7 +15,7 @@ class ImagesScreen extends StatelessWidget {
         padding: const EdgeInsets.all(8.0),
         child: Column(
           children: [
-            AppBannerAd(adUnitId: Environments.imageSelectorId),
+          //  AppBannerAd(adUnitId: Environments.imageSelectorId),
             Expanded(
               child: GridView.count(
                 crossAxisCount: 2,
